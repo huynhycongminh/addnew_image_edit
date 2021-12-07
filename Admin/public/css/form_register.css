@@ -1,0 +1,11 @@
+tr td .fa-exclamation-circle{
+    color: red;
+}
+
+tr td .fa-check-circle{
+    color: green;
+}
+
+tr td .fa-circle-o{
+    color: blue;
+}

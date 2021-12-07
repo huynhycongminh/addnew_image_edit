@@ -1,0 +1,29 @@
+.login_main {
+  background-image: url('../image/Login/bgLogin.jpeg');
+  height: 100vh;
+  background-size: cover;
+}
+
+#login{
+  margin: 0 auto;
+  width: 400px;
+}
+
+.form_login{
+  padding: 85px 10px 10px 10px;
+  background-color: #0000005c;
+}
+
+.label_login{
+  color: white;
+}
+
+.user_login{
+  border-radius: 50%;
+  transform: translate(75%, 50%);
+  width: 40%;
+}
+
+.form_login button{
+  width: 100%;
+}
