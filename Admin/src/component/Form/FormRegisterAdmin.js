@@ -1,13 +1,14 @@
 import React, { Component } from "react";
-import axios from "axios"
-export default class FormRegisterAdmin extends Component {
+import axios from "axios";
+import Checkbox from "../Storage/Checkbox";
 
+export default class FormRegisterAdmin extends Component {
   constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       car: [],
       cus: [],
-      info:[],
+      info: [],
       modalStatus: false,
       edit_car: null,
       nameCustomer: "",
@@ -15,124 +16,175 @@ export default class FormRegisterAdmin extends Component {
       nameModel: "",
       phoneNumber: null,
       email: "",
-      address:"",
-      note:"",
+      address: "",
+      note: "",
+      status: null,
       _id: null,
       ids: [],
       checked: false,
-    }
+      stringID: "",
+      customerCar: null
+    };
   }
+  
   showModal = () => {
-    const { nameCustomer, nameCar, nameModel, phoneNumber, email, address,note} = this.state;
+    const {
+      nameCustomer,
+      nameCar,
+      nameModel,
+      phoneNumber,
+      email,
+      address,
+      note,
+    } = this.state;
     if (this.state.modalStatus === true) {
-      return(
-        <form>
-           <div className="modal open">
-          <div className="modal-container">
-            <div className="modal-close">
-              <i className="fa fa-close" />
-            </div>
-            <div className="modal-header">
-              <div className="header-text">CUSTOMER INFORMATION</div>
-            </div>
-            <div className="modal-body">
-              <div className="row mb-32">
-                <div className="col">
-                  <span className="lbl-title">Full Name:</span>
-                  <span className="lbl-fname">
-                    <input
-                    value={nameCustomer}
-                    name="name"
-                    />
-                  </span>
-                </div>
+      return (
+        <form onSubmit={this.updateCustomer} method="PUT">
+          <div className="modal open">
+            <div className="modal-container">
+              <div className="modal-close">
+                <i className="fa fa-close" />
               </div>
-              <div className="row mb-32">
-                <div className="col">
-                  <span className="lbl-title">Email:</span>
-                  <span className="lbl-email">
-                  <input
-                    value={email}
-                    name="email"
-                    />
-
-                  </span>
-                </div>
+              <div className="modal-header">
+                <div className="header-text">CUSTOMER INFORMATION</div>
               </div>
-              <div className="row mb-32">
-                <div className="col">
-                  <span className="lbl-title">Phone Number:</span>
-                  <span className="lbl-phonenumber">
-
-                  <input
-                    value={phoneNumber}
-                    name="phoneNumber"
-                    />
-                  </span>
+              <div className="modal-body">
+                <div className="row mb-32">
+                  <div className="col">
+                    <span className="lbl-title">Full Name:</span>
+                    <span className="lbl-fname">
+                      <input value={nameCustomer} name="name" />
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div className="row mb-32">
-                <div className="col">
-                  <span className="lbl-title">Address:</span>
-                  <span className="lbl-address">
-
-                  <input
-                    value={address}
-                    name="address"
-                    />
-                  </span>
+                <div className="row mb-32">
+                  <div className="col">
+                    <span className="lbl-title">Email:</span>
+                    <span className="lbl-email">
+                      <input value={email} name="email" />
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div className="row mb-32">
-                <div className="col">
-                  <span className="lbl-title">Vehicle Model:</span>
-                  <span className="lbl-vehiclemodel">Sedan</span>
+                <div className="row mb-32">
+                  <div className="col">
+                    <span className="lbl-title">Phone Number:</span>
+                    <span className="lbl-phonenumber">
+                      <input value={phoneNumber} name="phoneNumber" />
+                    </span>
+                  </div>
                 </div>
-                <div className="col">
-                  <span className="lbl-title">Vehicle Type:</span>
-                  <span className="lbl-vehicletype">Audi A6</span>
+                <div className="row mb-32">
+                  <div className="col">
+                    <span className="lbl-title">Address:</span>
+                    <span className="lbl-address">
+                      <input value={address} name="address" />
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div className="row mb-40">
-                <div className="col">
-                  <span className="lbl-title">Note:</span>
-                  <span className="lbl-note">
-                  <input
-                    value={note}
-                    name="note"
-                    />
-                  </span>
+                <div className="row mb-32">
+                  <div className="col">
+                    <span className="lbl-title">Vehicle Model:</span>
+                    <span className="lbl-vehiclemodel">
+                      <input value={nameModel} name="nameModel" />
+                    </span>
+                  </div>
+                  <div className="col">
+                    <span className="lbl-title">Vehicle Type:</span>
+                    <span className="lbl-vehicletype">
+                      <input value={nameCar} name="nameCar" />
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <div className="mb-32 confirm">
-                <div className="btn btn-success">Accept</div>
-                <div className="btn btn-danger">Unacceptable</div>
+                <div className="row mb-40">
+                  <div className="col">
+                    <span className="lbl-title">Note:</span>
+                    <span className="lbl-note">
+                      <input value={note} name="note" />
+                    </span>
+                  </div>
+                </div>
+                <div className="mb-32 confirm">
+                  <button className="btn btn-success" >return </button>
+                  <button className="btn btn-danger"  >Accept</button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
         </form>
-      )
+      );
+    } else {
+      return "";
     }
-  }
+  };
+
   isChangeData = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     this.setState({ [name]: value });
   };
-  componentDidMount(){
-    axios.get("http://localhost:3000/get_data")
-    .then(response => response.data)
-      .then((data) => {
-        this.setState({info:data})
-      })
-  }
-  multiDeleteCar = () => {
-    let ids = this.state.cars
-      .filter((car) => car.isChecked === true)
-      .map((car) => parseInt(car._id));
+  componentDidMount() {
     axios
-      .delete(`http://localhost:3000/api/multi_delete_car`, {
+      .get("http://localhost:3000/get_data")
+      .then((response) => response.data)
+      .then((data) => {
+        this.setState({
+          info: data.map((data) => ({ ...data, isChecked: false })),
+        });
+      });
+  }
+
+  changeModalStatus = (event) => {
+    
+    const id = event.target.value;
+    axios
+      .get("http://localhost:3000/api/edit_customer", {
+        params: { _id: id },
+      })
+      .then((data) => {
+      
+        this.setState({
+          nameCustomer: data.data.customer.name,
+          nameCar: data.data.car.name,
+          // nameModel: data.data.name,
+          phoneNumber: data.data.customer.phoneNumber,
+          email: data.data.customer.email,
+          address: data.data.customer.address,
+          note: data.data.customer.note,
+          status: data.data.status,
+          _id: data.data._id,
+          modalStatus: !this.state.modalStatus,
+       
+        });
+      });
+  };
+  updateCustomer = () => {
+    // const value = event.target.value
+      axios
+      .put(
+        `http://localhost:3000/api/update_customer/${this.state._id}`,
+        {
+          status: 0,
+        }
+      )
+      .then((data) => {
+        console.log("Update success");
+      });
+  };
+  handleCheckChildElement = (event) => {
+    let info = this.state.info;
+    info.forEach((car) => {
+      if (car._id === parseInt(event.target.value))
+        car.isChecked = event.target.checked;
+    });
+    this.setState({ cars: info });
+  };
+
+  multiDeleteCustomer = () => {
+    let ids = this.state.info
+      .filter((info) => info.isChecked === true)
+      .map((info) => parseInt(info._id));
+    axios
+      .delete(`http://localhost:3000/api/multi_delete_customer`, {
         params: { ids: ids },
       })
       .then(() => {
@@ -142,62 +194,42 @@ export default class FormRegisterAdmin extends Component {
         window.location.reload(false);
       });
   };
+  checkedAll = (event) => {
+    let info = this.state.info;
+    info.forEach((car) => (car.isChecked = event.target.checked));
+    this.setState({
+      info: info,
+    });
+  };
+// RenderInfo = () => {
+//   const { info } = this.state;
+//   debugger
+//   info.map((info, key) => {
+//   //   debugger
+//   //   if (info.customer === null || info.car === null) {
+//   //     return "";
+//   //   }
+//   //   else{
+//       return(
+       
+//       )
+//     // }
+//   });
+// }
 
-  RenderInfo(){  
-    this.state.info.map((info) => {
-      if(info.car !== null){
-        this.state.car.push(info)
-      } else{
-        this.state.cus.push(info)
-      }
-    })
 
-    return  this.state.car.map((info,key) => (
-              <tr>
-              
-                <td>
-                  <input type="checkbox" name _id />
-                </td>
-                <td>
-                  {key+1}
-                </td>
-                <td>{info.customer.name}</td>
-                <td>{info.customer.phoneNumber}</td>
-                <td>{info.customer.email}</td>
-                <td>{info.customer.address}</td>
-                <td>{info.car.name}</td>
-                
-                <td>
-                  {this.StyleStatus(info.status)}
-                </td>
-                <td>
-                    <button
-                      // value={car._id}
-                      className="btn btn-primary edit-button"
-                      // onClick={(event) => this.changeModalStatus(event)}
-                    >
-                      Confirm
-                    </button>
-                  </td>
-              </tr>
-            ))
-
-  }
-
-  StyleStatus(status){
-    if(status === 0){
-      return <i className="fa fa-circle-o" />
-    } else if(status === 1){
-      return <i className="fa fa-check-circle" />
-    } else {
-      return <i className="fa fa-exclamation-circle" />
-    }
+  StyleStatus(status) {
+    if (status === 1) {
+      return <i className="fa fa-exclamation-circle" />;
+    } else if (status === 0) {
+      return <i className="fa fa-check-circle" />;
+    } 
   }
   checkedAll = (event) => {
-    let cars = this.state.cars;
-    cars.forEach((car) => (car.isChecked = event.target.checked));
+    let info = this.state.info;
+    info.forEach((car) => (car.isChecked = event.target.checked));
     this.setState({
-      cars: cars,
+      info: info,
     });
   };
 
@@ -219,23 +251,13 @@ export default class FormRegisterAdmin extends Component {
                 </select>
               </li>
               <li className="item-menu">
-                <a href="/">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width={20}
-                    height={20}
-                    fill="currentColor"
-                    className="bi bi-trash"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                    <path
-                      fillRule="evenodd"
-                      d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                    />
-                  </svg>
-                  Delete
-                </a>
+                <button
+                  className="btn btn-light"
+                  onClick={this.multiDeleteCustomer}
+                >
+                  Delete All
+                  <i class="fa fa-trash pl-1"></i>
+                </button>
               </li>
             </ul>
             <div className="search-box">
@@ -261,8 +283,11 @@ export default class FormRegisterAdmin extends Component {
             <thead>
               <tr>
                 <th scope="col">
-                  <input type="checkbox" name id 
-                   onClick={(event) => this.checkedAll(event)}
+                  <input
+                    type="checkbox"
+                    name
+                    id
+                    onClick={(event) => this.checkedAll(event)}
                   />
                 </th>
                 <th scope="col">ID</th>
@@ -276,40 +301,42 @@ export default class FormRegisterAdmin extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.RenderInfo()}
               {
-                this.state.cus.map((info,key) => (
+               this.state.info.map((info,key) => {
+                 if(info.customer === null || info.car === null){
+                  return "";
+                 }else{
+                    return(
                 <tr>
                 <td>
-                  <input type="checkbox" name id />
+                  <input type="checkbox" name _id />
                 </td>
-                <td>{key+1}</td>
-                <td>{info.customer.name}</td>
-                <td>{info.customer.phoneNumber}</td>
-                <td>{info.customer.email}</td>
-                <td>{info.customer.address}</td>
-                <td></td>
+                <td>{key + 1}</td>
+                <td>{info.customer === null ? "" : info.customer.name}</td>
+                <td>{info.customer === null ? "" : info.customer.phoneNumber}</td>
+                <td>{info.customer === null ? "" : info.customer.email}</td>
+                <td>{info.customer === null ? "" : info.customer.address}</td>
+                <td>{info.car === null ? "" : info.car.name}</td>
+                <td>{this.StyleStatus(info.status)}</td>
                 <td>
-                  {this.StyleStatus(info.status)}
+                  <button
+                    value={info._id}
+                    className="btn btn-primary edit-button"
+                    onClick={(event) => this.changeModalStatus(event)}
+                  >
+                    Confirm
+                  </button>
                 </td>
-                <td>
-                    <button
-                      // value={car._id}
-                      className="btn btn-primary edit-button"
-                      // onClick={(event) => this.changeModalStatus(event)}
-                    >
-                      Confirm
-                    </button>
-                  </td>
               </tr>
-                ))
+                    )
+                 } 
+               })
               }
-              
-            </tbody>
+              </tbody>
           </table>
         </div>
         {/* When user double-click inline customer add class name 'open' to open modal CUSTOMER DETAIL */}
-       
+        {this.showModal()}
       </div>
     );
   }

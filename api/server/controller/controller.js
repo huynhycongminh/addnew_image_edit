@@ -7,7 +7,7 @@ var Customer = require("../model/Customer");
 var AdminLogin = require("../model/AdminLogin");
 var GFS = require("../model/GFS");
 var gfs = require("fs");
-
+const ObjectId = require('mongodb').ObjectId;
 // Retrieve all [car, car model] and render form register test driver
 exports.new_test_drive = (reg, res) => {
   async.parallel(
@@ -325,3 +325,63 @@ exports.multi_delete_car = (req, res) => {
     if (err) return handleError(err);
   }).then((data) => res.json("Delete success"));
 };
+
+exports.edit_customer = (req, res) => {
+  console.log(req.params);
+  var id = req.query._id;
+  var StringId = new ObjectId(id);
+  CustomerCar.findOne({ _id: StringId})   
+   .populate({
+    path: "customer",
+    model: "Customer",
+  })
+  .populate({
+    path: "car",
+    model: "Car",
+    populate: [
+      {
+        path: "car_model",
+        model: "CarModel",
+      },
+    ],
+  }).then((data) => {
+    res.send(data);
+  });
+};
+
+// update car
+exports.update_customer = (req, res) => {
+
+  var id = req.params._id;
+  var good_id = new ObjectId(id);
+
+  CustomerCar.findById(good_id, function (err, cc) {
+    if (!cc) res.status(404).send("data is not found");
+    else {
+      cc.status = req.body.status;
+      cc
+        .save()
+        .then(() => {
+          res.json("Update complete");
+        })
+        .catch((err) => {
+          res.status(400).send("unable to update the database");
+        });
+    }
+  });
+};
+
+// delete car
+// exports.delete_car = (req, res) => {
+//   Car.deleteOne({ _id: req.params._id }, function (err) {
+//     if (err) return handleError(err);
+//   }).then((data) => res.json("Delete success"));
+// };
+
+// // multi delete car
+
+// exports.multi_delete_car = (req, res) => {
+//   Car.remove({ _id: { $in: req.query.ids } }, function (err) {
+//     if (err) return handleError(err);
+//   }).then((data) => res.json("Delete success"));
+// };

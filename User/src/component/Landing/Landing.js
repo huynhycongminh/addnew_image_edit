@@ -23,9 +23,11 @@ import Service from "../Section/HomePage/Service";
 import ContentImage from "../Section/ImageProduct/ContentImage";
 import ImageTextProduct from "../Section/Product/ImageTextProduct";
 import ModelProcut from "../Section/Product/ModelProcut";
+import Product from "../Section/Product/Product";
 import WrapperProduct from "../Section/Product/WrapperProduct";
 import BannerBottomPD from "../Section/ProductDetail/BannerBottomPD";
 import NamePD from "../Section/ProductDetail/NamePD";
+import ProductDetail from "../Section/ProductDetail/ProductDetail";
 import SpecificationsPD from "../Section/ProductDetail/SpecificationsPD";
 import FormRegister from "../Section/Register/FormRegister";
 
@@ -58,19 +60,12 @@ export default class Landing extends Component {
           <Brand2CP />
           <Brand3CP />
         </Route>
-        <Route exact path="/Product">
-          <MenuSecondary />
-          <HeaderProduct />
-          <WrapperProduct />
-          <ImageTextProduct />
-          <ModelProcut />
+
+        <Route exact path="/Product/:id" component={Product}>
+      
         </Route>
-        <Route exact path="/ProductDetail">
-          <MenuSecondary />
-          <HeaderProductDetail />
-          <NamePD />
-          <SpecificationsPD />
-          <BannerBottomPD />
+        <Route exact path="/ProductDetail/:id" component={ProductDetail}>
+       
         </Route>
         <Route exact path="/ImageProduct">
           <MenuSecondary />

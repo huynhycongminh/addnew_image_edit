@@ -4,7 +4,7 @@ require("./CarDetail");
 const Car = mongoose.model(
   "Car",
   new mongoose.Schema({
-    _id: Number,
+    _id: String,
     name: String,
     year: Date,
     image: {
