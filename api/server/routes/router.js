@@ -24,12 +24,12 @@ route.get("/api/select_car", controller.select_car);
 
 route.get("/api/edit_car", controller.edit_car);
 
-route.put("/api/update_car/:_id", controller.update_car)
+route.put("/api/update_car/:_id", controller.update_car);
 
-route.delete("/api/delete_car/:_id", controller.delete_car)
+route.delete("/api/delete_car/:_id", controller.delete_car);
 
-route.delete("/api/multi_delete_car", controller.multi_delete_car)
+route.delete("/api/multi_delete_car", controller.multi_delete_car);
 
-route.get("/api/get_image",controller.get_image)
+route.get("/api/get_image", controller.get_image);
 
 module.exports = route;

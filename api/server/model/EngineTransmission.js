@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const EngineTransmission = mongoose.model(
   "EngineTransmission",
   new mongoose.Schema({
-    _id: Number,
+    _id: String,
     engine: String,
     transmission: String,
     cylinder_capacity: String,

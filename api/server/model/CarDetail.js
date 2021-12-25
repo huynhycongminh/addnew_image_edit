@@ -7,21 +7,21 @@ require('./SizeVolume');
 const CarDetail = mongoose.model(
   "CarDetail",
   new mongoose.Schema({
-    _id: Number,
+    _id: String,
     size_volume: {
-      type: Number,
+      type: String,
       ref: "SizeVolume",
     },
     engine_transmission: {
-      type: Number,
+      type: String,
       ref: "EngineTransmission",
     },
     furniture: {
-      type: Number,
+      type: String,
       ref: "Furniture",
     },
     exterior: {
-      type: Number,
+      type: String,
       ref: "Exterior",
     },
   }),

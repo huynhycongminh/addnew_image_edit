@@ -1,12 +1,14 @@
 var CarModel = require("../model/CarModel");
 var Car = require("../model/Car");
 var async = require("async");
+
 var CustomerCarModel = require("../model/CustomerCarModel");
 var CustomerCar = require("../model/CustomerCar");
 var Customer = require("../model/Customer");
 var AdminLogin = require("../model/AdminLogin");
-var GFS = require("../model/GFS");
+var Chunk = require("../model/Chunk");
 var gfs = require("fs");
+
 
 // Retrieve all [car, car model] and render form register test driver
 exports.new_test_drive = (reg, res) => {
@@ -118,6 +120,7 @@ exports.find_car = (req, res) => {
         if (!data) {
           res.status(404).send({ message: "Not found car with id " + id });
         } else {
+          console.log(data);
           res.send(data);
         }
       })
@@ -221,32 +224,34 @@ exports.get_list_car = (req, res) => {
 
 exports.select_car = (req, res) => {
   Car.find({ _id: req.query._id })
-    .populate({
-      path: "image",
-      model: "GFS",
-    })
-    .populate({
-      path: "car_detail",
-      model: "CarDetail",
-      populate: [
-        {
-          path: "furniture",
-          model: "Furniture",
-        },
-        {
-          path: "exterior",
-          model: "Exterior",
-        },
-        {
-          path: "engine_transmission",
-          model: "EngineTransmission",
-        },
-        {
-          path: "size_volume",
-          model: "SizeVolume",
-        },
-      ],
-    })
+    .populate([
+      {
+        path: "image",
+        model: "GFS",
+      },
+      {
+        path: "car_detail",
+        model: "CarDetail",
+        populate: [
+          {
+            path: "size_volume",
+            model: "SizeVolume",
+          },
+          {
+            path: "engine_transmission",
+            model: "EngineTransmission",
+          },
+          {
+            path: "furniture",
+            model: "Furniture",
+          },
+          {
+            path: "exterior",
+            model: "Exterior",
+          },
+        ],
+      },
+    ])
     .then((data) => {
       const readStream = gfs.createReadStream(
         `../api/assets/img/${data[0].image.filename}`
@@ -261,32 +266,29 @@ exports.select_car = (req, res) => {
 
 // get image
 exports.get_image = (req, res) => {
-  Car.find({})
-    .populate({
-      path: "image",
-      model: "GFS",
+  Chunk.find()
+  .populate({
+    path: "files_id",
+    model: "GFS",
+    populate: {
+      path: "metadata",
+      model: "Car"
+    }
+  })
+  .then((data) => {
+    const convert_data = data.map(file => {
+      const base64 = file.data.toString("base64")
+      return {...file, base64}
     })
-    .then((data) => {
-      var images = data.forEach((car) => {
-        const readStream = gfs.createReadStream(
-          `../api/assets/img/${car.image.filename}`
-        );
-        readStream.on("data", (chunk) => {
-          {
-            image: chunk.toString("base64");
-          }
-        });
-       
-      });
-      res.send(images);
-      console.log(images);
-    });
+    res.send(convert_data);
+  });
 };
 
 // edit car
 exports.edit_car = (req, res) => {
   console.log(req.params);
   Car.findOne({ _id: req.query._id }).then((data) => {
+    
     res.send(data);
   });
 };

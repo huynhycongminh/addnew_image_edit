@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const SizeVolume = mongoose.model(
   "SizeVolume",
   new mongoose.Schema({
-    _id: Number,
+    _id: String,
     length: String,
     width: String,
     height: String,
