@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { BrowserRouter as Link, NavLink } from "react-router-dom";
+import Item from "./Item";
 export default class CarItemsHP extends Component {
   constructor(props) {
     super(props);

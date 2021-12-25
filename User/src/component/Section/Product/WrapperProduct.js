@@ -28,7 +28,7 @@ export default class WrapperProduct extends Component {
       <div className="container section info-product">
         {
           this.state.cars.map((car) => {
-            if (car._id == this.props.match.params.id)
+            if (car._id !== this.props.match.params._id)
             return(
               <p className="description">
               {car.node}

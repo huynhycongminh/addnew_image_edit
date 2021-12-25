@@ -7,6 +7,7 @@ import Chatbox from "./Chatbox/Chatbox";
 
 
 import Landing from "./Landing/Landing";
+import MenuSecondary from "./Menu/MenuSecondary";
 
 class App extends Component {
   render() {

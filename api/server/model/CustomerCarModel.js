@@ -7,7 +7,7 @@ const CustomerCarModel = mongoose.model(
   "CustomerCarModel",
   new mongoose.Schema({
     customer: { type: mongoose.Schema.Types.ObjectId, ref: "Customer" },
-    car_model: { type: Number, ref: "CarModel" },
+    car_model: { type: String, ref: "CarModel" },
   }),
   "customer_car_models"
 );

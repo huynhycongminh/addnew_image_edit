@@ -6,7 +6,7 @@ const CustomerCar = mongoose.model(
   "CustomerCar",
   new mongoose.Schema({
     customer: { type:  mongoose.Schema.Types.ObjectId, ref: "Customer" },
-    car: { type: Number, ref: "Car" },
+    car: { type: String, ref: "Car" },
     status: Number,
   }),
   "customer_cars"
