@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from "axios";
+import { Link } from 'react-router-dom';
 export default class PostManager extends Component {
   constructor(props) {
     super(props);
@@ -22,6 +23,7 @@ export default class PostManager extends Component {
       });
     });
   }
+  
     render() {
       let car_models = this.state.car_models.map((cars) => {
         return cars.name
@@ -97,13 +99,12 @@ export default class PostManager extends Component {
                       <td></td>
                       <td className="description-car">{car.node}</td>
                       <td>
-                    <button
-                      // value={car._id}
+                    <Link
+                      to={"/edit/"+car._id}
                       className="btn btn-primary edit-button"
-                      // onClick={(event) => this.changeModalStatus(event)}
                     >
                       Edit
-                    </button>
+                    </Link>
                   </td>
                   <td>
                     <button

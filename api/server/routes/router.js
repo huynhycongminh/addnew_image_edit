@@ -32,4 +32,12 @@ route.delete("/api/multi_delete_car", controller.multi_delete_car);
 
 route.get("/api/get_image", controller.get_image);
 
+route.get("/api/get_car_model", controller.get_car_model)
+
+route.post("/api/add_post", controller.add_post)
+
+route.get("/api/edit_post/:id", controller.edit_post)
+
+route.put("/api/update_post/:id", controller.update_post)
+
 module.exports = route;

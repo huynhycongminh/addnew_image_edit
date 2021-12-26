@@ -11,6 +11,7 @@ import Login from "./Login/Login";
 import PostManager from "./PostManager/PostManager";
 import Cookies from 'js-cookie';
 import PostAdd from "./PostManager/PostAdd";
+import PostEdit from "./PostManager/PostEdit"
 
 
 export default class App extends Component {
@@ -19,7 +20,7 @@ export default class App extends Component {
             <div>
                  <div>
           <Router>
-              {/* <MenuAdmin /> */}
+              <MenuAdmin />
               <Routes/>
               
           </Router>
@@ -38,10 +39,9 @@ const Routes = () => {
           <Route exact path="/" component={ComStorageAdmin} />
           <Route exact path="/form" component={ComFormRegisterAdmin} />
           <Route exact path="/post" component={ComPostManager} />
-          <Route  exact path="/add_new">
-                <MenuAdmin/>
-              <  PostAdd/>
-          </Route>
+          <Route  exact path="/add_new" component={PostAdd}/>
+          <Route  path="/edit/:id" component={PostEdit}/>
+          
           <Route exact path="/:ex">
               <Error />
           </Route>
@@ -59,14 +59,14 @@ const ComStorageAdmin = () => {
   if( Cookies.get("user") === 'loginFalse' || !Cookies.get("user")){
       return (<Switch><Redirect to="/login" /></Switch>)
   }else{
-      return ( <Switch><Route component={StorageAdmin}>  <MenuAdmin /><StorageAdmin    /></Route></Switch>)
+      return ( <Switch><Route component={StorageAdmin}>  <StorageAdmin    /></Route></Switch>)
   }
 }
 const ComFormRegisterAdmin = () => {
   if( Cookies.get("user") === 'loginFalse' || !Cookies.get("user")){
       return (<Switch><Redirect to="/login" /></Switch>)
   }else{
-      return (<Switch><Route component={FormRegisterAdmin}>  <MenuAdmin /><FormRegisterAdmin /></Route></Switch>)
+      return (<Switch><Route component={FormRegisterAdmin}>  <FormRegisterAdmin /></Route></Switch>)
   }
 }
 
@@ -74,7 +74,7 @@ const ComPostManager = () => {
   if( Cookies.get("user") === 'loginFalse' || !Cookies.get("user")){
       return (<Switch><Redirect to="/login" /></Switch>)
   }else{
-      return (<Switch><Route component={PostManager}>  <MenuAdmin /><PostManager /></Route></Switch>)
+      return (<Switch><Route component={PostManager}>  <PostManager /></Route></Switch>)
   }
 }
 
